@@ -1,195 +1,51 @@
-import React from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 function Tshirts() {
+  const [products, setProducts] = useState([]);
+  const router = useRouter();
+  useEffect(() => {
+    fetchProductTshirts();
+  }, []);
+  const fetchProductTshirts = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/fetchProductwithCategory?category=tshirts"
+    );
+    const data = await response.data.product;
+    setProducts(data);
+  };
+
   return (
-  <div>
+    <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
+        {products.map((items) => (
+          <div
+            className="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3"
+            onClick={(event) => router.push(`/product/${items._id}`)}
+            key={items._id}
+          >
+            <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
+              <img
+                src={items.image}
+                alt="card-image"
+                className="object-cover w-full h-full"
+              />
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <p className="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+                  {items.title}
+                </p>
+                <p className="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900 px-4">
+                  ₹{items.price}
+                </p>
+              </div>
+            </div>
           </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto  bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
-      </div>
-      <div class="relative flex flex-col text-gray-700 mx-auto bg-white shadow-md bg-clip-border rounded-xl w-[350px] m-3">
-        <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-          <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-            alt="card-image"
-            class="object-cover w-full h-full"
-          />
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              Apple AirPods
-            </p>
-            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-              $95.00
-            </p>
-          </div>
-          <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </p>
-        </div>
+        ))}
       </div>
     </div>
-  </div>
   );
 }
 

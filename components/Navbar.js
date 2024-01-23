@@ -1,19 +1,29 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
-// import { MdOutlineNightsStay } from "react-icons/md";
-import { MdLightMode } from "react-icons/md";
+import { MdLightMode, MdOutlineShoppingCart } from "react-icons/md";
 import { MdDarkMode } from "react-icons/md";
 
 function Navbar(props) {
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [showcart, setShowcart] = useState(false);
+  const [cart, setCart] = useState([]);
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")));
+  }, [showcart]);
+
   const handleSearch = () => {
-    router.push(`/search/${search.toLowerCase().replace(/\s+/g, '-')}`);
+    router.push(`/search/${search}`, undefined, { shallow: true });
+  };
+  const removeCart = (id) => {
+    localStorage.setItem("cart" , JSON.stringify(cart.filter(items => items._id !== id)))
+    setCart(JSON.parse(localStorage.getItem("cart")));
+
   };
   return (
-    <div>
+    <div className="w-full">
       <nav className="text-gray-600 border-b-2 shadow-lg w-full">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <Link
@@ -50,19 +60,58 @@ function Navbar(props) {
             />
           </form>
           <div className="flex my-3 md:my-0">
-          <Link href='/login'>
-          <FaUser className="text-3xl mx-4"/>
-          </Link>
-          {props.mode === 'light' &&
-              <MdDarkMode onClick={props.handleMode} className="text-3xl mx-4"/>
-
-          }
-            {props.mode ==='dark' && (
-              <MdLightMode onClick={props.handleMode} className="text-3xl mx-4"/>
-          )}
+            <Link href="/login">
+              <FaUser className="text-3xl mx-4" />
+            </Link>
+            {props.mode === "light" && (
+              <MdDarkMode
+                onClick={props.handleMode}
+                className="text-3xl mx-4"
+              />
+            )}
+            {props.mode === "dark" && (
+              <MdLightMode
+                onClick={props.handleMode}
+                className="text-3xl mx-4"
+              />
+            )}
+            <MdOutlineShoppingCart
+              className="text-3xl mx-4"
+              onClick={(event) => {
+                !showcart ? setShowcart(true) : setShowcart(false);
+              }}
+            />
           </div>
         </div>
       </nav>
+      {showcart && (
+        <div className="h-[90vh] absolute ml-[75%] bg-gray-300 overflow-scroll overflow-x-hidden rounded">
+          {cart.map((items) => (
+            <div
+              key={items._id}
+              className="flex h-auto bg-white m-2 shadow-md my-5"
+            >
+              <img src={items.image} className="w-[30%]" alt={items.title} />
+              <div className="mx-4">
+                <p>{items.title}</p>
+                <p>₹{items.price}</p>
+                <button
+                  className="border mr-5 p-3 hover:bg-gray-300 hover:border-blue-200 hover:border-2 mt-[25%]"
+                  onClick={(event) => router.push(`/buyitem/${items._id}`)}
+                >
+                  Buy now
+                </button>
+                <button
+                  className="border mr-5 p-3 hover:bg-gray-300 hover:border-blue-200 hover:border-2 mt-[25%]"
+                  onClick={(event) => removeCart(items._id)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

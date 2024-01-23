@@ -3,17 +3,10 @@ import connectDB from "../lib/connectDB";
 
 export default async function handler(req, res) {
   connectDB();
-  if (req.method == "POST") {
+  const id = req.query.id
+  if (req.method == "GET") {
     try {
-      const { title, body, category, image , price } = req.body;
-      const product = new productSchema({
-        title: title,
-        body: body,
-        category: category,
-        image: image,
-        price : price
-      });
-      await product.save();
+     const product = await productSchema.find({_id: id})
       res.status(200).send({ done: true, product: product });
     } catch (error) {
       console.log(error);
